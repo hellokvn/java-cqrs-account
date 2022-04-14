@@ -23,39 +23,30 @@ public class AccountEventHandler implements EventHandler {
                 .accountType(event.getAccountType())
                 .balance(event.getOpeningBalance())
                 .build();
-
         accountRepository.save(bankAccount);
     }
 
     @Override
     public void on(FundsDepositedEvent event) {
         var bankAccount = accountRepository.findById(event.getId());
-
         if (bankAccount.isEmpty()) {
             return;
         }
-
         var currentBalance = bankAccount.get().getBalance();
         var latestBalance = currentBalance + event.getAmount();
-
         bankAccount.get().setBalance(latestBalance);
-
         accountRepository.save(bankAccount.get());
     }
 
     @Override
     public void on(FundsWithdrawnEvent event) {
         var bankAccount = accountRepository.findById(event.getId());
-
         if (bankAccount.isEmpty()) {
             return;
         }
-
         var currentBalance = bankAccount.get().getBalance();
         var latestBalance = currentBalance - event.getAmount();
-
         bankAccount.get().setBalance(latestBalance);
-
         accountRepository.save(bankAccount.get());
     }
 

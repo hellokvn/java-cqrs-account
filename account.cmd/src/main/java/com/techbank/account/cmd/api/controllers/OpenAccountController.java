@@ -28,7 +28,9 @@ public class OpenAccountController {
     @PostMapping
     public ResponseEntity<BaseResponse> openAccount(@RequestBody OpenAccountCommand command) {
         var id = UUID.randomUUID().toString();
+        
         command.setId(id);
+
         try {
             commandDispatcher.send(command);
 
